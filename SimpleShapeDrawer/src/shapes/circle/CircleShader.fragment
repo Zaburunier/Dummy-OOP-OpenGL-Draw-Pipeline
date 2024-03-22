@@ -1,0 +1,21 @@
+#version 330 core
+
+out vec4 color;
+
+
+uniform ivec2 windowSize;
+
+uniform vec3 centerPoint;
+uniform float radius;
+
+
+void main()
+{
+	vec2 screenCoord = vec2(float(gl_FragCoord.x) / windowSize.x, float(gl_FragCoord.y) / windowSize.y);
+	screenCoord = -1 + 2 * screenCoord;
+	vec2 fromCenterVector = screenCoord.xy - centerPoint.xy;
+	
+	float aspectRatio = float(windowSize.x) / windowSize.y;
+	float distanceSqr = aspectRatio * aspectRatio * fromCenterVector.x * fromCenterVector.x + fromCenterVector.y * fromCenterVector.y;
+	color = vec4(1.0f, 0.5f, 0.2f, int(distanceSqr <= radius * radius));
+}
